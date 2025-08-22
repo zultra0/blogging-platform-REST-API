@@ -1,7 +1,4 @@
 # Blogging Platform REST API 
-## Getting Started
-
-### 1.
 
 ## Using the REST API
 
