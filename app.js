@@ -2,7 +2,7 @@ import express from "express";
 import postsRoutes from "./routes/posts.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -12,6 +12,6 @@ app.get("/", (req, res) => {
   res.send("Welcome to my Blogging Platform API");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on PORT ${PORT}`);
 });
