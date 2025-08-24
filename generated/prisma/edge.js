@@ -127,7 +127,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Mikhail\\Documents\\Projects\\express\\generated\\prisma",
+      "value": "C:\\Users\\Mikhail\\Documents\\Projects\\express deploy\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -138,10 +138,14 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Mikhail\\Documents\\Projects\\express\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Mikhail\\Documents\\Projects\\express deploy\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -155,6 +159,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -163,8 +168,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\nmodel Post {\n  id        Int      @id @default(autoincrement())\n  title     String   @db.VarChar(255)\n  content   String   @db.VarChar(255)\n  category  String   @db.VarChar(255)\n  tags      String[]\n  createdAt DateTime @default(now()) @db.Timestamptz(6)\n  updatedAt DateTime @updatedAt @db.Timestamptz(6)\n}\n",
-  "inlineSchemaHash": "b161311f424a0a62c5d8e01ba500104ab8be9e03a1734731ae646c3fb835cf0d",
+  "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\nmodel Post {\n  id        Int      @id @default(autoincrement())\n  title     String   @db.VarChar(255)\n  content   String   @db.VarChar(255)\n  category  String   @db.VarChar(255)\n  tags      String[]\n  createdAt DateTime @default(now()) @db.Timestamptz(6)\n  updatedAt DateTime @updatedAt @db.Timestamptz(6)\n}\n",
+  "inlineSchemaHash": "a71819e926998f31446fd5bf7008bf8a110c29a4944bdca6f73816649a537704",
   "copyEngine": true
 }
 config.dirname = '/'
