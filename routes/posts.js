@@ -18,3 +18,4 @@ router.delete("/", deleteAllPosts);
 router.delete("/:id", deletePost);
 
 export default router;
+// TEST
