@@ -67,36 +67,16 @@ export const getPostById = async (req, res) => {
 
 export const createPost = async (req, res) => {
   try {
-    const { title, content, category, tags } = req.body;
+    const posts = req.body;
 
-    const errors = [];
-
-    if (!title || title.trim() === "") {
-      errors.push('The "title" field is required');
+    for (const post of posts) {
+      if (!post.title || post.title.trim() === "") {
+        return res.status(400).json({ error: "The title field is empty." });
+      }
     }
 
-    if (!content || content.trim() === "") {
-      errors.push('The "content" field is required');
-    }
-
-    if (!category || category.trim() === "") {
-      errors.push('The "category" field is required');
-    }
-
-    if (errors.length > 0) {
-      return res.status(400).json({
-        error: "Invalid data",
-        details: errors,
-      });
-    }
-
-    const newPost = await prisma.post.create({
-      data: {
-        title,
-        content,
-        category,
-        tags,
-      },
+    const newPost = await prisma.post.createMany({
+      data: posts,
     });
 
     res.status(201).json(newPost);
