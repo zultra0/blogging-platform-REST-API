@@ -69,17 +69,49 @@ export const createPost = async (req, res) => {
   try {
     const posts = req.body;
 
-    for (const post of posts) {
-      if (!post.title || post.title.trim() === "") {
+    if (Array.isArray(posts)) {
+
+      for (const post of posts) {
+        const { title, content, category } = post;
+
+        if (!title || title.trim() === "") {
+          return res.status(400).json({ error: "The title field is empty." });
+        }
+
+        if (!content || content.trim() === "") {
+          return res.status(400).json({ error: "The content field is empty." });
+        }
+
+        if (!category || category.trim() === "") {
+          return res.status(400).json({ error: "The category field is empty." });
+        }
+      }
+
+      const newPost = await prisma.post.createMany({
+        data: posts
+      });
+      res.status(201).json(newPost);
+
+    } else {
+      const { title, content, category } = posts;
+
+      if (!title || title.trim() === "") {
         return res.status(400).json({ error: "The title field is empty." });
       }
-    }
 
-    const newPost = await prisma.post.createMany({
-      data: posts,
-    });
+      if (!content || content.trim() === "") {
+        return res.status(400).json({ error: "The content field is empty." });
+      }
 
-    res.status(201).json(newPost);
+      if (!category || category.trim() === "") {
+        return res.status(400).json({ error: "The category field is empty." });
+      }   
+
+      const newPost = await prisma.post.create({
+        data: posts
+      });
+      res.status(201).json(newPost);
+    } 
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
