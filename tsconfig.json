@@ -4,12 +4,14 @@
     "moduleResolution": "nodenext",
     "target": "es2024",
     "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
     "allowJs": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "noEmitOnError": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
   "include": [
     "./src/**/*"
