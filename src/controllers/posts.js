@@ -1,4 +1,4 @@
-import { PrismaClient } from "../generated/prisma/client.js";
+import { PrismaClient } from "../../generated/prisma/client.js";
 
 const prisma = new PrismaClient();
 
@@ -105,13 +105,13 @@ export const createPost = async (req, res) => {
 
       if (!category || category.trim() === "") {
         return res.status(400).json({ error: "The category field is empty." });
-      }   
+      }
 
       const newPost = await prisma.post.create({
         data: posts
       });
       res.status(201).json(newPost);
-    } 
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
