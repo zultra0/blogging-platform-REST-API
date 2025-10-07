@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
   getAllPosts,
   getPostById,
@@ -8,7 +8,7 @@ import {
   deletePost,
 } from "../controllers/posts.js";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getAllPosts);
 router.get("/:id", getPostById);
@@ -18,4 +18,3 @@ router.delete("/", deleteAllPosts);
 router.delete("/:id", deletePost);
 
 export default router;
-// TEST
