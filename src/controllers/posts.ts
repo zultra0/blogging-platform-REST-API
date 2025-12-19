@@ -1,10 +1,12 @@
 import { PrismaClient } from "../../generated/prisma/client.js";
+import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export const getAllPosts = async (req, res) => {
+export const getAllPosts = async (req: Request, res: Response) => {
   try {
-    const { term } = req.query;
+    const termParam = req.query.term;
+    const term = typeof termParam === "string" ? termParam : undefined;
 
     let posts;
 
@@ -43,11 +45,12 @@ export const getAllPosts = async (req, res) => {
       searchTerm: term || null,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(500).json({ error: message });
   }
 };
 
-export const getPostById = async (req, res) => {
+export const getPostById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
 
@@ -56,16 +59,18 @@ export const getPostById = async (req, res) => {
     });
 
     if (!post) {
-      return res.status(404).json({ error: "Post not found" });
+      res.status(404).json({ error: "Post not found" });
+      return;
     }
 
     res.status(200).json(post);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).json({ error: message });
   }
 };
 
-export const createPost = async (req, res) => {
+export const createPost = async (req: Request, res: Response): Promise<void> => {
   try {
     const posts = req.body;
 
@@ -75,15 +80,18 @@ export const createPost = async (req, res) => {
         const { title, content, category } = post;
 
         if (!title || title.trim() === "") {
-          return res.status(400).json({ error: "The title field is empty." });
+          res.status(400).json({ error: "The title field is empty." });
+          return;
         }
 
         if (!content || content.trim() === "") {
-          return res.status(400).json({ error: "The content field is empty." });
+          res.status(400).json({ error: "The content field is empty." });
+          return;
         }
 
         if (!category || category.trim() === "") {
-          return res.status(400).json({ error: "The category field is empty." });
+          res.status(400).json({ error: "The category field is empty." });
+          return;
         }
       }
 
@@ -96,15 +104,18 @@ export const createPost = async (req, res) => {
       const { title, content, category } = posts;
 
       if (!title || title.trim() === "") {
-        return res.status(400).json({ error: "The title field is empty." });
+        res.status(400).json({ error: "The title field is empty." });
+        return;
       }
 
       if (!content || content.trim() === "") {
-        return res.status(400).json({ error: "The content field is empty." });
+        res.status(400).json({ error: "The content field is empty." });
+        return;
       }
 
       if (!category || category.trim() === "") {
-        return res.status(400).json({ error: "The category field is empty." });
+        res.status(400).json({ error: "The category field is empty." });
+        return;
       }
 
       const newPost = await prisma.post.create({
@@ -113,11 +124,12 @@ export const createPost = async (req, res) => {
       res.status(201).json(newPost);
     }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).json({ error: message });
   }
 };
 
-export const updatePost = async (req, res) => {
+export const updatePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, content, category, tags } = req.body;
@@ -129,14 +141,12 @@ export const updatePost = async (req, res) => {
 
     res.status(200).json(updatedPost);
   } catch (error) {
-    if (error.code === "P2025") {
-      return res.status(404).json({ error: "Post not found" });
-    }
-    res.status(400).json({ error: error.message });
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).json({ error: message });
   }
 };
 
-export const deletePost = async (req, res) => {
+export const deletePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -148,18 +158,17 @@ export const deletePost = async (req, res) => {
 
     res.sendStatus(204);
   } catch (error) {
-    if (error.code === "P2025") {
-      return res.status(404).json({ error: "Post not found" });
-    }
-    res.status(400).json({ error: error.code });
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).json({ error: message });
   }
 };
 
-export const deleteAllPosts = async (req, res) => {
+export const deleteAllPosts = async (req: Request, res: Response) => {
   try {
     const posts = await prisma.post.deleteMany({});
     res.sendStatus(204);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).json({ error: message });
   }
 };
